@@ -302,6 +302,25 @@ body {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.3);
+  cursor: help;
+  position: relative;
+}
+
+.trust-badge.low:hover::after {
+  content: attr(data-explanation);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 10;
+  margin-bottom: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 /* RESULTS INFO */
@@ -1018,11 +1037,14 @@ function render() {
     if (item.email) badges.push('<span class="badge">✉ Email</span>');
     if (item.phone) badges.push('<span class="badge">📞 Phone</span>');
 
-    // Trust badge
+    // Trust badge with explanation for Low trust
     let trustBadge = '';
     if (item.trust_level) {
       const level = item.trust_level.toLowerCase();
-      trustBadge = `<span class="trust-badge ${level}">${item.trust_level}</span>`;
+      const explanation = item.trust_level === 'Low' 
+        ? 'Missing contact info or broken website' 
+        : '';
+      trustBadge = `<span class="trust-badge ${level}" ${explanation ? `data-explanation="${explanation}"` : ''}>${item.trust_level}</span>`;
     }
 
     div.innerHTML = `
@@ -1098,6 +1120,19 @@ function openModal(item) {
         <div class="modal-label">Website</div>
         <div class="modal-value">
           ${item.website ? `<a href="${escapeHtml(item.website)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.website)}</a>` : "N/A"}
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-row">
+      <svg class="modal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div>
+        <div class="modal-label">Trust Score</div>
+        <div class="modal-value">
+          <span class="trust-badge ${item.trust_level ? item.trust_level.toLowerCase() : 'low'}">${item.trust_level || 'Low'}</span>
+          <span style="margin-left:8px;color:var(--text-muted);font-size:12px;">${item.trust_score || 0}/100</span>
         </div>
       </div>
     </div>
