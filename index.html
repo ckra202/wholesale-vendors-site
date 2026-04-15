@@ -263,6 +263,15 @@ body {
   color: var(--success);
 }
 
+/* RESULTS INFO */
+.results-info {
+  text-align: center;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 /* LOADING */
 .loading {
   display: flex;
@@ -485,6 +494,8 @@ body {
     </div>
   </div>
 
+  <div class="results-info" id="results-info"></div>
+
   <div class="chips-section">
     <h3>Categories</h3>
     <div class="chips" id="categories"></div>
@@ -566,6 +577,21 @@ function updateStats() {
   document.getElementById("filter-website").textContent = data.filter(d => d.website).length;
   document.getElementById("filter-email").textContent = data.filter(d => d.email).length;
   document.getElementById("filter-phone").textContent = data.filter(d => d.phone).length;
+  
+  // Update results info
+  updateResultsInfo();
+}
+
+function updateResultsInfo() {
+  const info = document.getElementById("results-info");
+  const total = data.length;
+  const showing = filtered.length;
+  
+  if (showing === total) {
+    info.innerHTML = `Showing all <strong>${total}</strong> vendors`;
+  } else {
+    info.innerHTML = `Showing <strong>${showing}</strong> of <strong>${total}</strong> vendors`;
+  }
 }
 
 function buildCategories() {
@@ -651,6 +677,24 @@ function setFilter(filter) {
   applyFilters();
 }
 
+function resetFilters() {
+  currentCategory = "All";
+  currentSubcategory = "All";
+  currentFilter = "all";
+  searchQuery = "";
+  
+  document.querySelectorAll("#categories .chip").forEach(c => c.classList.remove("active"));
+  document.querySelector("#categories .chip").classList.add("active");
+  
+  document.querySelectorAll("#filters .chip").forEach(c => c.classList.remove("active"));
+  document.querySelector("#filters .chip").classList.add("active");
+  
+  document.getElementById("subcategory-section").style.display = "none";
+  document.querySelector(".search").value = "";
+  
+  applyFilters();
+}
+
 function applyFilters() {
   filtered = data.filter(d => {
     const matchCategory = currentCategory === "All" || d.category === currentCategory;
@@ -712,11 +756,29 @@ function render() {
   const grid = document.getElementById("grid");
   
   if (filtered.length === 0) {
+    const hasFilters = currentCategory !== "All" || currentSubcategory !== "All" || currentFilter !== "all" || searchQuery;
+    
+    let message = "No vendors found";
+    let hint = "Try adjusting your filters or search";
+    
+    if (searchQuery) {
+      message = `No results for "${escapeHtml(searchQuery)}"`;
+      hint = "Try a different search term or clear filters";
+    } else if (currentFilter !== "all") {
+      const filterName = currentFilter === "website" ? "websites" : currentFilter === "email" ? "emails" : "phone numbers";
+      message = `No vendors with ${filterName}`;
+      hint = `Try selecting "All" in Quick Filters`;
+    } else if (currentCategory !== "All") {
+      message = `No vendors in ${escapeHtml(currentCategory)}`;
+      hint = "Try a different category";
+    }
+    
     grid.innerHTML = `
       <div class="empty">
         <div class="empty-icon">🔍</div>
-        <p>No vendors found</p>
-        <p style="margin-top:8px;font-size:13px;">Try adjusting your search or filters</p>
+        <p>${message}</p>
+        <p style="margin-top:8px;font-size:13px;">${hint}</p>
+        ${hasFilters ? '<button onclick="resetFilters()" style="margin-top:16px;padding:8px 16px;background:var(--accent);border:none;border-radius:8px;color:white;cursor:pointer;font-size:13px;">Reset Filters</button>' : ''}
       </div>
     `;
     return;
