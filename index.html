@@ -231,7 +231,16 @@ body {
   font-size: 13px;
   color: var(--accent-light);
   margin-bottom: 8px;
-  word-break: break-all;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-website::before {
+  content: "🔗";
+  font-size: 12px;
+  opacity: 0.7;
 }
 
 .card-phone {
@@ -752,6 +761,18 @@ function truncateUrl(url, maxLen = 40) {
   return url.substring(0, maxLen) + "...";
 }
 
+function extractDomain(website) {
+  if (!website) return "";
+  try {
+    let url = website.toLowerCase();
+    if (!url.startsWith('http')) url = 'https://' + url;
+    const domain = new URL(url).hostname.replace('www.', '');
+    return domain;
+  } catch {
+    return website;
+  }
+}
+
 function render() {
   const grid = document.getElementById("grid");
   
@@ -802,7 +823,7 @@ function render() {
     div.innerHTML = `
       <div class="card-name">${highlight(item.name)}</div>
       <div class="card-category">${highlight(categoryDisplay)}</div>
-      ${item.website ? `<div class="card-website">${highlight(truncateUrl(item.website))}</div>` : ''}
+      ${item.website ? `<div class="card-website">${highlight(extractDomain(item.website))}</div>` : ''}
       ${item.phone ? `<div class="card-phone">📞 ${escapeHtml(item.phone)}</div>` : ''}
       <div class="card-badges">${badges.join('')}</div>
     `;
