@@ -495,6 +495,28 @@ body {
     <div class="chips" id="subcategories"></div>
   </div>
 
+  <div class="chips-section">
+    <h3>Quick Filters</h3>
+    <div class="chips" id="filters">
+      <div class="chip active" data-filter="all" onclick="setFilter('all')">
+        <span>All</span>
+        <span class="count" id="filter-all">-</span>
+      </div>
+      <div class="chip" data-filter="website" onclick="setFilter('website')">
+        <span>✓ Website</span>
+        <span class="count" id="filter-website">-</span>
+      </div>
+      <div class="chip" data-filter="email" onclick="setFilter('email')">
+        <span>✉ Email</span>
+        <span class="count" id="filter-email">-</span>
+      </div>
+      <div class="chip" data-filter="phone" onclick="setFilter('phone')">
+        <span>📞 Phone</span>
+        <span class="count" id="filter-phone">-</span>
+      </div>
+    </div>
+  </div>
+
   <div class="grid" id="grid">
     <div class="loading">
       <div class="spinner"></div>
@@ -511,6 +533,7 @@ let data = [];
 let filtered = [];
 let currentCategory = "All";
 let currentSubcategory = "All";
+let currentFilter = "all";
 let searchQuery = "";
 
 // Fetch data
@@ -537,6 +560,12 @@ function updateStats() {
   document.getElementById("total-count").textContent = data.length;
   document.getElementById("website-count").textContent = data.filter(d => d.website).length;
   document.getElementById("showing-count").textContent = filtered.length;
+  
+  // Update filter counts
+  document.getElementById("filter-all").textContent = data.length;
+  document.getElementById("filter-website").textContent = data.filter(d => d.website).length;
+  document.getElementById("filter-email").textContent = data.filter(d => d.email).length;
+  document.getElementById("filter-phone").textContent = data.filter(d => d.phone).length;
 }
 
 function buildCategories() {
@@ -615,10 +644,23 @@ function filterCategory(cat) {
   applyFilters();
 }
 
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll("#filters .chip").forEach(c => c.classList.remove("active"));
+  document.querySelector(`#filters .chip[data-filter="${filter}"]`).classList.add("active");
+  applyFilters();
+}
+
 function applyFilters() {
   filtered = data.filter(d => {
     const matchCategory = currentCategory === "All" || d.category === currentCategory;
     const matchSub = currentSubcategory === "All" || d.subcategory === currentSubcategory;
+
+    // Quick filter
+    let matchFilter = true;
+    if (currentFilter === "website") matchFilter = !!d.website;
+    else if (currentFilter === "email") matchFilter = !!d.email;
+    else if (currentFilter === "phone") matchFilter = !!d.phone;
 
     const matchSearch =
       !searchQuery ||
@@ -628,7 +670,7 @@ function applyFilters() {
       (d.email && d.email.toLowerCase().includes(searchQuery)) ||
       (d.website && d.website.toLowerCase().includes(searchQuery));
 
-    return matchCategory && matchSub && matchSearch;
+    return matchCategory && matchSub && matchFilter && matchSearch;
   });
 
   updateStats();
