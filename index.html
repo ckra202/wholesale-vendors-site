@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Wholesale Directory</title>
+<title>Wholesale Vendor Directory</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,104 +36,26 @@ body {
   background: var(--bg-gradient);
   color: var(--text);
   min-height: 100vh;
-  display: flex;
   line-height: 1.5;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 280px;
-  min-width: 280px;
-  background: var(--panel);
-  border-right: 1px solid var(--border);
-  padding: 24px 16px;
-  height: 100vh;
-  overflow-y: auto;
-  position: sticky;
-  top: 0;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-
-.sidebar h2 {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-  padding: 0 8px;
-}
-
-.category {
-  padding: 10px 12px;
-  cursor: pointer;
-  border-radius: 8px;
-  margin-bottom: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.2s ease;
-}
-
-.category:hover {
-  background: var(--card);
-}
-
-.category.active {
-  background: var(--accent-glow);
-  color: var(--accent-light);
-  border-left: 3px solid var(--accent);
-  padding-left: 9px;
-}
-
-.category .count {
-  font-size: 12px;
-  color: var(--text-muted);
-  background: var(--card);
-  padding: 2px 8px;
-  border-radius: 12px;
-}
-
-.category.active .count {
-  background: var(--accent);
-  color: white;
-}
-
-.subcategory-section {
-  margin-top: 24px;
-}
-
-/* MAIN */
-.main {
-  flex: 1;
-  padding: 32px;
-  max-width: 1400px;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
 }
 
 /* HEADER */
 .header {
+  text-align: center;
   margin-bottom: 32px;
 }
 
 .header h1 {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent-light) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -141,107 +63,137 @@ body {
 
 .header p {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 16px;
 }
 
-/* TOP BAR */
-.topbar {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
+/* SEARCH */
 .search-wrapper {
-  flex: 1;
-  min-width: 200px;
+  max-width: 600px;
+  margin: 0 auto 32px;
   position: relative;
 }
 
 .search-wrapper svg {
   position: absolute;
-  left: 14px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .search {
   width: 100%;
-  padding: 12px 16px 12px 44px;
+  padding: 16px 20px 16px 48px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
-  font-size: 14px;
+  font-size: 16px;
   transition: all 0.2s ease;
 }
 
 .search:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
 .search::placeholder {
   color: var(--text-muted);
 }
 
-.sort {
-  padding: 12px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 120px;
-}
-
-.sort:hover {
-  border-color: var(--accent);
-}
-
-.sort:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
-
 /* STATS */
 .stats {
   display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
 }
 
 .stat {
   background: var(--card);
-  padding: 16px 20px;
+  padding: 20px 28px;
   border-radius: 12px;
   border: 1px solid var(--border);
+  text-align: center;
 }
 
 .stat-value {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--accent-light);
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   margin-top: 4px;
+}
+
+/* CHIPS SECTION */
+.chips-section {
+  margin-bottom: 28px;
+}
+
+.chips-section h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  background: var(--card-hover);
+}
+
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.chip .count {
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.chip.active .count {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
 }
 
 /* CARD */
@@ -253,30 +205,13 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   position: relative;
-  overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-light));
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .card:hover {
   background: var(--card-hover);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   border-color: var(--accent);
-}
-
-.card:hover::before {
-  opacity: 1;
 }
 
 .card-name {
@@ -286,20 +221,40 @@ body {
   color: var(--text);
 }
 
-.card-sub {
+.card-category {
   font-size: 13px;
   color: var(--text-muted);
   margin-bottom: 12px;
 }
 
+.card-website {
+  font-size: 13px;
+  color: var(--accent-light);
+  margin-bottom: 12px;
+  word-break: break-all;
+}
+
+.card-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: var(--accent-glow);
   color: var(--accent-light);
   padding: 4px 10px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
+}
+
+.badge.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
 }
 
 /* LOADING */
@@ -328,6 +283,7 @@ body {
   text-align: center;
   padding: 60px 20px;
   color: var(--text-muted);
+  grid-column: 1 / -1;
 }
 
 .empty-icon {
@@ -459,41 +415,26 @@ body {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    width: 100%;
-    min-width: auto;
-    height: auto;
-    position: relative;
-    padding: 16px;
-  }
-  
-  .sidebar h2 {
-    margin-top: 16px;
-  }
-  
-  .sidebar h2:first-child {
-    margin-top: 0;
-  }
-  
-  .main {
-    padding: 16px;
+  .container {
+    padding: 24px 16px;
   }
   
   .header h1 {
-    font-size: 22px;
+    font-size: 28px;
   }
   
   .stats {
-    flex-wrap: wrap;
+    gap: 12px;
   }
   
   .stat {
+    padding: 16px 20px;
     flex: 1;
     min-width: 100px;
+  }
+  
+  .stat-value {
+    font-size: 24px;
   }
   
   .grid {
@@ -510,34 +451,17 @@ body {
 
 <body>
 
-<div class="sidebar">
-  <h2>Categories</h2>
-  <div id="categories"></div>
-  
-  <div class="subcategory-section">
-    <h2>Subcategories</h2>
-    <div id="subcategories"></div>
-  </div>
-</div>
-
-<div class="main">
+<div class="container">
   <div class="header">
-    <h1>Wholesale Directory</h1>
-    <p>Browse vendors by category and subcategory</p>
+    <h1>Find Wholesale Vendors Fast</h1>
+    <p>685 vendors with active websites across 20+ categories</p>
   </div>
 
-  <div class="topbar">
-    <div class="search-wrapper">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-      <input class="search" placeholder="Search vendors..." oninput="search(this.value)">
-    </div>
-    <select class="sort" onchange="sortData(this.value)">
-      <option value="">Sort by</option>
-      <option value="az">Name A-Z</option>
-      <option value="za">Name Z-A</option>
-    </select>
+  <div class="search-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <input class="search" placeholder="Search vendors by name, category, or website..." oninput="search(this.value)">
   </div>
 
   <div class="stats">
@@ -547,12 +471,22 @@ body {
     </div>
     <div class="stat">
       <div class="stat-value" id="website-count">-</div>
-      <div class="stat-label">Active Vendor Websites</div>
+      <div class="stat-label">Active Websites</div>
     </div>
     <div class="stat">
       <div class="stat-value" id="showing-count">-</div>
       <div class="stat-label">Showing</div>
     </div>
+  </div>
+
+  <div class="chips-section">
+    <h3>Categories</h3>
+    <div class="chips" id="categories"></div>
+  </div>
+
+  <div class="chips-section" id="subcategory-section" style="display:none;">
+    <h3>Subcategories</h3>
+    <div class="chips" id="subcategories"></div>
   </div>
 
   <div class="grid" id="grid">
@@ -572,7 +506,6 @@ let filtered = [];
 let currentCategory = "All";
 let currentSubcategory = "All";
 let searchQuery = "";
-let currentSort = "";
 
 // Fetch data
 fetch("data.json")
@@ -582,7 +515,6 @@ fetch("data.json")
     filtered = d;
     updateStats();
     buildCategories();
-    buildSubcategories();
     render();
   })
   .catch(err => {
@@ -602,13 +534,13 @@ function updateStats() {
 }
 
 function buildCategories() {
-  const cats = ["All", ...new Set(data.map(d => d.category))];
+  const cats = ["All", ...new Set(data.map(d => d.category).filter(Boolean).sort())];
   const container = document.getElementById("categories");
   container.innerHTML = "";
 
   cats.forEach(cat => {
     const div = document.createElement("div");
-    div.className = "category";
+    div.className = "chip";
     const count = cat === "All" ? data.length : data.filter(d => d.category === cat).length;
     div.innerHTML = `
       <span>${escapeHtml(cat)}</span>
@@ -616,7 +548,7 @@ function buildCategories() {
     `;
     if (cat === "All") div.classList.add("active");
     div.onclick = () => {
-      document.querySelectorAll("#categories .category").forEach(c => c.classList.remove("active"));
+      document.querySelectorAll("#categories .chip").forEach(c => c.classList.remove("active"));
       div.classList.add("active");
       filterCategory(cat);
     };
@@ -633,34 +565,41 @@ function buildSubcategories() {
   }
   subs = ["All", ...subs.filter(Boolean).sort()];
   
+  const section = document.getElementById("subcategory-section");
   const container = document.getElementById("subcategories");
   container.innerHTML = "";
 
-  subs.forEach(sub => {
-    const div = document.createElement("div");
-    div.className = "category";
-    let count;
-    if (currentCategory === "All") {
-      count = sub === "All" ? data.length : data.filter(d => d.subcategory === sub).length;
-    } else {
-      count = sub === "All" 
-        ? data.filter(d => d.category === currentCategory).length
-        : data.filter(d => d.category === currentCategory && d.subcategory === sub).length;
-    }
-    div.innerHTML = `
-      <span>${escapeHtml(sub)}</span>
-      <span class="count">${count}</span>
-    `;
-    if (sub === currentSubcategory) div.classList.add("active");
+  if (subs.length > 1) {
+    section.style.display = "block";
     
-    div.onclick = () => {
-      document.querySelectorAll("#subcategories .category").forEach(c => c.classList.remove("active"));
-      div.classList.add("active");
-      currentSubcategory = sub;
-      applyFilters();
-    };
-    container.appendChild(div);
-  });
+    subs.forEach(sub => {
+      const div = document.createElement("div");
+      div.className = "chip";
+      let count;
+      if (currentCategory === "All") {
+        count = sub === "All" ? data.length : data.filter(d => d.subcategory === sub).length;
+      } else {
+        count = sub === "All" 
+          ? data.filter(d => d.category === currentCategory).length
+          : data.filter(d => d.category === currentCategory && d.subcategory === sub).length;
+      }
+      div.innerHTML = `
+        <span>${escapeHtml(sub)}</span>
+        <span class="count">${count}</span>
+      `;
+      if (sub === currentSubcategory) div.classList.add("active");
+      
+      div.onclick = () => {
+        document.querySelectorAll("#subcategories .chip").forEach(c => c.classList.remove("active"));
+        div.classList.add("active");
+        currentSubcategory = sub;
+        applyFilters();
+      };
+      container.appendChild(div);
+    });
+  } else {
+    section.style.display = "none";
+  }
 }
 
 function filterCategory(cat) {
@@ -678,18 +617,13 @@ function applyFilters() {
     const matchSearch =
       !searchQuery ||
       (d.name && d.name.toLowerCase().includes(searchQuery)) ||
+      (d.category && d.category.toLowerCase().includes(searchQuery)) ||
       (d.subcategory && d.subcategory.toLowerCase().includes(searchQuery)) ||
       (d.email && d.email.toLowerCase().includes(searchQuery)) ||
       (d.website && d.website.toLowerCase().includes(searchQuery));
 
     return matchCategory && matchSub && matchSearch;
   });
-
-  if (currentSort === "az") {
-    filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
-  } else if (currentSort === "za") {
-    filtered.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
-  }
 
   updateStats();
   render();
@@ -720,9 +654,10 @@ function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function sortData(type) {
-  currentSort = type;
-  applyFilters();
+function truncateUrl(url, maxLen = 40) {
+  if (!url) return "";
+  if (url.length <= maxLen) return url;
+  return url.substring(0, maxLen) + "...";
 }
 
 function render() {
@@ -745,10 +680,20 @@ function render() {
     const div = document.createElement("div");
     div.className = "card";
 
+    const categoryDisplay = item.subcategory 
+      ? `${item.category} → ${item.subcategory}` 
+      : item.category || "Other";
+
+    let badges = [];
+    if (item.website) badges.push('<span class="badge success">✓ Website</span>');
+    if (item.email) badges.push('<span class="badge">✉ Email</span>');
+    if (item.phone) badges.push('<span class="badge">📞 Phone</span>');
+
     div.innerHTML = `
       <div class="card-name">${highlight(item.name)}</div>
-      <div class="card-sub">${highlight(item.subcategory || "Other")}</div>
-      <span class="badge">${escapeHtml(item.category)}</span>
+      <div class="card-category">${highlight(categoryDisplay)}</div>
+      ${item.website ? `<div class="card-website">${highlight(truncateUrl(item.website))}</div>` : ''}
+      <div class="card-badges">${badges.join('')}</div>
     `;
 
     div.onclick = () => openModal(item);
@@ -784,7 +729,7 @@ function openModal(item) {
       </svg>
       <div>
         <div class="modal-label">Subcategory</div>
-        <div class="modal-value">${escapeHtml(item.subcategory || "Other")}</div>
+        <div class="modal-value">${escapeHtml(item.subcategory || "N/A")}</div>
       </div>
     </div>
     
