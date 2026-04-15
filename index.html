@@ -230,8 +230,14 @@ body {
 .card-website {
   font-size: 13px;
   color: var(--accent-light);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   word-break: break-all;
+}
+
+.card-phone {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
 }
 
 .card-badges {
@@ -693,6 +699,7 @@ function render() {
       <div class="card-name">${highlight(item.name)}</div>
       <div class="card-category">${highlight(categoryDisplay)}</div>
       ${item.website ? `<div class="card-website">${highlight(truncateUrl(item.website))}</div>` : ''}
+      ${item.phone ? `<div class="card-phone">📞 ${escapeHtml(item.phone)}</div>` : ''}
       <div class="card-badges">${badges.join('')}</div>
     `;
 
