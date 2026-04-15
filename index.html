@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wholesale Directory</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0a0f1a;
+  --bg-gradient: linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 100%);
+  --panel: #111827;
+  --card: #1a2234;
+  --card-hover: #222d42;
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border: #2d3748;
+  --success: #10b981;
+  --warning: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  line-height: 1.5;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 24px 16px;
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+.sidebar h2 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding: 0 8px;
+}
+
+.category {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+
+.category:hover {
+  background: var(--card);
+}
+
+.category.active {
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  padding-left: 9px;
+}
+
+.category .count {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--card);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.category.active .count {
+  background: var(--accent);
+  color: white;
+}
+
+.subcategory-section {
+  margin-top: 24px;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 32px;
+  max-width: 1400px;
+}
+
+/* HEADER */
+.header {
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* TOP BAR */
+.topbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-wrapper {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.search-wrapper svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  width: 18px;
+  height: 18px;
+}
+
+.search {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.search::placeholder {
+  color: var(--text-muted);
+}
+
+.sort {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.sort:hover {
+  border-color: var(--accent);
+}
+
+.sort:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* STATS */
+.stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat {
+  background: var(--card);
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  background: var(--card-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.card-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--accent-glow);
+  color: var(--accent-light);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* LOADING */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* EMPTY STATE */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: var(--panel);
+  padding: 32px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 480px;
+  border: 1px solid var(--border);
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: var(--card);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-right: 40px;
+}
+
+.modal-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-row:last-child {
+  border-bottom: none;
+}
+
+.modal-icon {
+  width: 20px;
+  color: var(--accent-light);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.modal-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.modal-value {
+  font-size: 14px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.modal-value a {
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+.modal-value a:hover {
+  text-decoration: underline;
+}
+
+/* HIGHLIGHT */
+.highlight {
+  background: #fbbf24;
+  color: #1a1a1a;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    min-width: auto;
+    height: auto;
+    position: relative;
+    padding: 16px;
+  }
+  
+  .sidebar h2 {
+    margin-top: 16px;
+  }
+  
+  .sidebar h2:first-child {
+    margin-top: 0;
+  }
+  
+  .main {
+    padding: 16px;
+  }
+  
+  .header h1 {
+    font-size: 22px;
+  }
+  
+  .stats {
+    flex-wrap: wrap;
+  }
+  
+  .stat {
+    flex: 1;
+    min-width: 100px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    padding: 24px;
+    margin: 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+  <h2>Categories</h2>
+  <div id="categories"></div>
+  
+  <div class="subcategory-section">
+    <h2>Subcategories</h2>
+    <div id="subcategories"></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="header">
+    <h1>Wholesale Directory</h1>
+    <p>Browse vendors by category and subcategory</p>
+  </div>
+
+  <div class="topbar">
+    <div class="search-wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input class="search" placeholder="Search vendors..." oninput="search(this.value)">
+    </div>
+    <select class="sort" onchange="sortData(this.value)">
+      <option value="">Sort by</option>
+      <option value="az">Name A-Z</option>
+      <option value="za">Name Z-A</option>
+    </select>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="total-count">-</div>
+      <div class="stat-label">Total Vendors</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="showing-count">-</div>
+      <div class="stat-label">Showing</div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+let data = [];
+let filtered = [];
+let currentCategory = "All";
+let currentSubcategory = "All";
+let searchQuery = "";
+let currentSort = "";
+
+// Fetch data
+fetch("data.json")
+  .then(r => r.json())
+  .then(d => {
+    data = d;
+    filtered = d;
+    updateStats();
+    buildCategories();
+    buildSubcategories();
+    render();
+  })
+  .catch(err => {
+    console.error("Failed to load data:", err);
+    document.getElementById("grid").innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <p>Failed to load vendor data</p>
+      </div>
+    `;
+  });
+
+function updateStats() {
+  document.getElementById("total-count").textContent = data.length;
+  document.getElementById("showing-count").textContent = filtered.length;
+}
+
+function buildCategories() {
+  const cats = ["All", ...new Set(data.map(d => d.category))];
+  const container = document.getElementById("categories");
+  container.innerHTML = "";
+
+  cats.forEach(cat => {
+    const div = document.createElement("div");
+    div.className = "category";
+    const count = cat === "All" ? data.length : data.filter(d => d.category === cat).length;
+    div.innerHTML = `
+      <span>${escapeHtml(cat)}</span>
+      <span class="count">${count}</span>
+    `;
+    if (cat === "All") div.classList.add("active");
+    div.onclick = () => {
+      document.querySelectorAll("#categories .category").forEach(c => c.classList.remove("active"));
+      div.classList.add("active");
+      filterCategory(cat);
+    };
+    container.appendChild(div);
+  });
+}
+
+function buildSubcategories() {
+  let subs;
+  if (currentCategory === "All") {
+    subs = [...new Set(data.map(d => d.subcategory))];
+  } else {
+    subs = [...new Set(data.filter(d => d.category === currentCategory).map(d => d.subcategory))];
+  }
+  subs = ["All", ...subs.filter(Boolean).sort()];
+  
+  const container = document.getElementById("subcategories");
+  container.innerHTML = "";
+
+  subs.forEach(sub => {
+    const div = document.createElement("div");
+    div.className = "category";
+    let count;
+    if (currentCategory === "All") {
+      count = sub === "All" ? data.length : data.filter(d => d.subcategory === sub).length;
+    } else {
+      count = sub === "All" 
+        ? data.filter(d => d.category === currentCategory).length
+        : data.filter(d => d.category === currentCategory && d.subcategory === sub).length;
+    }
+    div.innerHTML = `
+      <span>${escapeHtml(sub)}</span>
+      <span class="count">${count}</span>
+    `;
+    if (sub === currentSubcategory) div.classList.add("active");
+    
+    div.onclick = () => {
+      document.querySelectorAll("#subcategories .category").forEach(c => c.classList.remove("active"));
+      div.classList.add("active");
+      currentSubcategory = sub;
+      applyFilters();
+    };
+    container.appendChild(div);
+  });
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  currentSubcategory = "All";
+  buildSubcategories();
+  applyFilters();
+}
+
+function applyFilters() {
+  filtered = data.filter(d => {
+    const matchCategory = currentCategory === "All" || d.category === currentCategory;
+    const matchSub = currentSubcategory === "All" || d.subcategory === currentSubcategory;
+
+    const matchSearch =
+      !searchQuery ||
+      (d.name && d.name.toLowerCase().includes(searchQuery)) ||
+      (d.subcategory && d.subcategory.toLowerCase().includes(searchQuery)) ||
+      (d.email && d.email.toLowerCase().includes(searchQuery)) ||
+      (d.website && d.website.toLowerCase().includes(searchQuery));
+
+    return matchCategory && matchSub && matchSearch;
+  });
+
+  if (currentSort === "az") {
+    filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  } else if (currentSort === "za") {
+    filtered.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+  }
+
+  updateStats();
+  render();
+}
+
+function search(q) {
+  searchQuery = q.toLowerCase();
+  applyFilters();
+}
+
+function highlight(text) {
+  if (!text) return "";
+  if (!searchQuery) return escapeHtml(text);
+
+  const escaped = escapeHtml(text);
+  const regex = new RegExp(`(${escapeRegex(searchQuery)})`, "gi");
+  return escaped.replace(regex, '<span class="highlight">$1</span>');
+}
+
+function escapeHtml(text) {
+  if (!text) return "";
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function sortData(type) {
+  currentSort = type;
+  applyFilters();
+}
+
+function render() {
+  const grid = document.getElementById("grid");
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🔍</div>
+        <p>No vendors found</p>
+        <p style="margin-top:8px;font-size:13px;">Try adjusting your search or filters</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = "";
+
+  filtered.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <div class="card-name">${highlight(item.name)}</div>
+      <div class="card-sub">${highlight(item.subcategory || "Other")}</div>
+      <span class="badge">${escapeHtml(item.category)}</span>
+    `;
+
+    div.onclick = () => openModal(item);
+    grid.appendChild(div);
+  });
+}
+
+function openModal(item) {
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modalContent");
+
+  content.innerHTML = `
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    <div class="modal-title">${escapeHtml(item.name)}</div>
+    
+    <div class="modal-row">
+      <svg class="modal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+      </svg>
+      <div>
+        <div class="modal-label">Category</div>
+        <div class="modal-value">${escapeHtml(item.category)}</div>
+      </div>
+    </div>
+    
+    <div class="modal-row">
+      <svg class="modal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+      </svg>
+      <div>
+        <div class="modal-label">Subcategory</div>
+        <div class="modal-value">${escapeHtml(item.subcategory || "Other")}</div>
+      </div>
+    </div>
+    
+    <div class="modal-row">
+      <svg class="modal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+      </svg>
+      <div>
+        <div class="modal-label">Phone</div>
+        <div class="modal-value">${escapeHtml(item.phone || "N/A")}</div>
+      </div>
+    </div>
+    
+    <div class="modal-row">
+      <svg class="modal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+      </svg>
+      <div>
+        <div class="modal-label">Email</div>
+        <div class="modal-value">${escapeHtml(item.email || "N/A")}</div>
+      </div>
+    </div>
+    
+    <div class="modal-row">
+      <svg class="modal-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+      </svg>
+      <div>
+        <div class="modal-label">Website</div>
+        <div class="modal-value">
+          ${item.website ? `<a href="${escapeHtml(item.website)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.website)}</a>` : "N/A"}
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+document.getElementById("modal").addEventListener("click", (e) => {
+  if (e.target.id === "modal") {
+    closeModal();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeModal();
+  }
+});
+</script>
+
+</body>
+</html>
