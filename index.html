@@ -747,42 +747,46 @@ function clearSearch() {
 }
 
 function buildCategories() {
-  // Define main categories to show prominently
-  const mainCategories = ["Clothes", "Shoes", "Hair", "Devices"];
-  
-  // Get all categories from data
-  const allCats = [...new Set(data.map(d => d.category).filter(Boolean))];
-  
-  // Build final list: "All", main categories, then "Other" if there are remaining
-  const cats = ["All", ...mainCategories];
-  
-  // Check if there are categories not in main list
-  const otherCats = allCats.filter(c => !mainCategories.includes(c));
-  if (otherCats.length > 0) {
-    cats.push("Other");
-  }
+  // Top categories to display prominently (by count)
+  const mainCategories = [
+    "Clothes", "Hair", "Devices", "Health & Beauty",
+    "Kids & Toys", "Home & Garden", "Sports & Outdoors", "Other"
+  ];
   
   const container = document.getElementById("categories");
   container.innerHTML = "";
 
-  cats.forEach(cat => {
-    const div = document.createElement("div");
-    div.className = "chip";
-    
+  // "All" first
+  const allDiv = document.createElement("div");
+  allDiv.className = "chip active";
+  allDiv.innerHTML = `
+    <span>All</span>
+    <span class="count">${data.length}</span>
+  `;
+  allDiv.onclick = () => {
+    document.querySelectorAll("#categories .chip").forEach(c => c.classList.remove("active"));
+    allDiv.classList.add("active");
+    filterCategory("All");
+  };
+  container.appendChild(allDiv);
+
+  // Add main categories with counts
+  mainCategories.forEach(cat => {
     let count;
-    if (cat === "All") {
-      count = data.length;
-    } else if (cat === "Other") {
-      count = data.filter(d => !mainCategories.includes(d.category)).length;
+    if (cat === "Other") {
+      count = data.filter(d => !mainCategories.slice(0, -1).includes(d.category)).length;
     } else {
       count = data.filter(d => d.category === cat).length;
     }
     
+    if (count === 0) return; // Skip empty categories
+    
+    const div = document.createElement("div");
+    div.className = "chip";
     div.innerHTML = `
       <span>${escapeHtml(cat)}</span>
       <span class="count">${count}</span>
     `;
-    if (cat === "All") div.classList.add("active");
     div.onclick = () => {
       document.querySelectorAll("#categories .chip").forEach(c => c.classList.remove("active"));
       div.classList.add("active");
@@ -793,15 +797,12 @@ function buildCategories() {
 }
 
 function buildSubcategories() {
-  // Define main categories
-  const mainCategories = ["Clothes", "Shoes", "Hair", "Devices"];
-  
   let subs;
   if (currentCategory === "All") {
     subs = [...new Set(data.map(d => d.subcategory))];
   } else if (currentCategory === "Other") {
     // Get subcategories from non-main categories
-    subs = [...new Set(data.filter(d => !mainCategories.includes(d.category)).map(d => d.subcategory))];
+    subs = [...new Set(data.filter(d => !MAIN_CATEGORIES.includes(d.category)).map(d => d.subcategory))];
   } else {
     subs = [...new Set(data.filter(d => d.category === currentCategory).map(d => d.subcategory))];
   }
@@ -822,8 +823,8 @@ function buildSubcategories() {
         count = sub === "All" ? data.length : data.filter(d => d.subcategory === sub).length;
       } else if (currentCategory === "Other") {
         count = sub === "All"
-          ? data.filter(d => !mainCategories.includes(d.category)).length
-          : data.filter(d => !mainCategories.includes(d.category) && d.subcategory === sub).length;
+          ? data.filter(d => !MAIN_CATEGORIES.includes(d.category)).length
+          : data.filter(d => !MAIN_CATEGORIES.includes(d.category) && d.subcategory === sub).length;
       } else {
         count = sub === "All" 
           ? data.filter(d => d.category === currentCategory).length
@@ -855,6 +856,11 @@ function filterCategory(cat) {
   applyFilters();
 }
 
+const MAIN_CATEGORIES = [
+  "Clothes", "Hair", "Devices", "Health & Beauty",
+  "Kids & Toys", "Home & Garden", "Sports & Outdoors"
+];
+
 function setFilter(filter) {
   currentFilter = filter;
   document.querySelectorAll("#filters .chip").forEach(c => c.classList.remove("active"));
@@ -881,14 +887,11 @@ function resetFilters() {
 }
 
 function applyFilters() {
-  // Define main categories (same as in buildCategories)
-  const mainCategories = ["Clothes", "Shoes", "Hair", "Devices"];
-  
   filtered = data.filter(d => {
     // Category matching - handle "Other" specially
     let matchCategory = true;
     if (currentCategory === "Other") {
-      matchCategory = !mainCategories.includes(d.category);
+      matchCategory = !MAIN_CATEGORIES.includes(d.category);
     } else {
       matchCategory = currentCategory === "All" || d.category === currentCategory;
     }
