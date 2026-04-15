@@ -915,6 +915,15 @@ function applyFilters() {
     return matchCategory && matchSub && matchFilter && matchSearch;
   });
 
+  // Sort by trust level (High -> Medium -> Low), then by name
+  const trustOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+  filtered.sort((a, b) => {
+    const trustA = trustOrder[a.trust_level] || 99;
+    const trustB = trustOrder[b.trust_level] || 99;
+    if (trustA !== trustB) return trustA - trustB;
+    return (a.name || '').localeCompare(b.name || '');
+  });
+
   updateStats();
   render();
 }
