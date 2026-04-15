@@ -546,6 +546,10 @@ body {
       <div class="stat-label">Total Vendors</div>
     </div>
     <div class="stat">
+      <div class="stat-value" id="website-count">-</div>
+      <div class="stat-label">Active Vendor Websites</div>
+    </div>
+    <div class="stat">
       <div class="stat-value" id="showing-count">-</div>
       <div class="stat-label">Showing</div>
     </div>
@@ -593,6 +597,7 @@ fetch("data.json")
 
 function updateStats() {
   document.getElementById("total-count").textContent = data.length;
+  document.getElementById("website-count").textContent = data.filter(d => d.website).length;
   document.getElementById("showing-count").textContent = filtered.length;
 }
 
