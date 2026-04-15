@@ -281,6 +281,59 @@ body {
   color: var(--text-muted);
 }
 
+/* ACTIVE FILTERS */
+.active-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  min-height: 24px;
+}
+
+.active-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-glow);
+  border: 1px solid var(--accent);
+  color: var(--accent-light);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.active-filter button {
+  background: none;
+  border: none;
+  color: var(--accent-light);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+}
+
+.active-filter button:hover {
+  color: white;
+}
+
+.reset-all {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-all:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
 /* LOADING */
 .loading {
   display: flex;
@@ -505,6 +558,8 @@ body {
 
   <div class="results-info" id="results-info"></div>
 
+  <div class="active-filters" id="active-filters"></div>
+
   <div class="chips-section">
     <h3>Categories</h3>
     <div class="chips" id="categories"></div>
@@ -589,6 +644,7 @@ function updateStats() {
   
   // Update results info
   updateResultsInfo();
+  updateActiveFilters();
 }
 
 function updateResultsInfo() {
@@ -601,6 +657,61 @@ function updateResultsInfo() {
   } else {
     info.innerHTML = `Showing <strong>${showing}</strong> of <strong>${total}</strong> vendors`;
   }
+}
+
+function updateActiveFilters() {
+  const container = document.getElementById("active-filters");
+  const hasFilters = currentCategory !== "All" || currentSubcategory !== "All" || currentFilter !== "all" || searchQuery;
+  
+  if (!hasFilters) {
+    container.innerHTML = "";
+    return;
+  }
+  
+  let tags = [];
+  
+  if (currentCategory !== "All") {
+    tags.push(`<span class="active-filter">📁 ${escapeHtml(currentCategory)} <button onclick="clearCategory()">×</button></span>`);
+  }
+  
+  if (currentSubcategory !== "All") {
+    tags.push(`<span class="active-filter">🏷 ${escapeHtml(currentSubcategory)} <button onclick="clearSubcategory()">×</button></span>`);
+  }
+  
+  if (currentFilter !== "all") {
+    const label = currentFilter === "website" ? "✓ Website" : currentFilter === "email" ? "✉ Email" : "📞 Phone";
+    tags.push(`<span class="active-filter">${label} <button onclick="setFilter('all')">×</button></span>`);
+  }
+  
+  if (searchQuery) {
+    tags.push(`<span class="active-filter">🔍 "${escapeHtml(searchQuery)}" <button onclick="clearSearch()">×</button></span>`);
+  }
+  
+  tags.push(`<button class="reset-all" onclick="resetFilters()">Reset All</button>`);
+  
+  container.innerHTML = tags.join('');
+}
+
+function clearCategory() {
+  currentCategory = "All";
+  currentSubcategory = "All";
+  document.querySelectorAll("#categories .chip").forEach(c => c.classList.remove("active"));
+  document.querySelector("#categories .chip").classList.add("active");
+  document.getElementById("subcategory-section").style.display = "none";
+  applyFilters();
+}
+
+function clearSubcategory() {
+  currentSubcategory = "All";
+  document.querySelectorAll("#subcategories .chip").forEach(c => c.classList.remove("active"));
+  document.querySelector("#subcategories .chip").classList.add("active");
+  applyFilters();
+}
+
+function clearSearch() {
+  searchQuery = "";
+  document.querySelector(".search").value = "";
+  applyFilters();
 }
 
 function buildCategories() {
