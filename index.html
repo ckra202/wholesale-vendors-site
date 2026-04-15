@@ -23,6 +23,7 @@
   --border: #2d3748;
   --success: #10b981;
   --warning: #f59e0b;
+  --danger: #ef4444;
 }
 
 * {
@@ -270,6 +271,37 @@ body {
 .badge.success {
   background: rgba(16, 185, 129, 0.15);
   color: var(--success);
+}
+
+/* TRUST BADGES */
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trust-badge.high {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.trust-badge.medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.trust-badge.low {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 /* RESULTS INFO */
@@ -715,14 +747,37 @@ function clearSearch() {
 }
 
 function buildCategories() {
-  const cats = ["All", ...new Set(data.map(d => d.category).filter(Boolean).sort())];
+  // Define main categories to show prominently
+  const mainCategories = ["Clothes", "Shoes", "Hair", "Devices"];
+  
+  // Get all categories from data
+  const allCats = [...new Set(data.map(d => d.category).filter(Boolean))];
+  
+  // Build final list: "All", main categories, then "Other" if there are remaining
+  const cats = ["All", ...mainCategories];
+  
+  // Check if there are categories not in main list
+  const otherCats = allCats.filter(c => !mainCategories.includes(c));
+  if (otherCats.length > 0) {
+    cats.push("Other");
+  }
+  
   const container = document.getElementById("categories");
   container.innerHTML = "";
 
   cats.forEach(cat => {
     const div = document.createElement("div");
     div.className = "chip";
-    const count = cat === "All" ? data.length : data.filter(d => d.category === cat).length;
+    
+    let count;
+    if (cat === "All") {
+      count = data.length;
+    } else if (cat === "Other") {
+      count = data.filter(d => !mainCategories.includes(d.category)).length;
+    } else {
+      count = data.filter(d => d.category === cat).length;
+    }
+    
     div.innerHTML = `
       <span>${escapeHtml(cat)}</span>
       <span class="count">${count}</span>
@@ -738,9 +793,15 @@ function buildCategories() {
 }
 
 function buildSubcategories() {
+  // Define main categories
+  const mainCategories = ["Clothes", "Shoes", "Hair", "Devices"];
+  
   let subs;
   if (currentCategory === "All") {
     subs = [...new Set(data.map(d => d.subcategory))];
+  } else if (currentCategory === "Other") {
+    // Get subcategories from non-main categories
+    subs = [...new Set(data.filter(d => !mainCategories.includes(d.category)).map(d => d.subcategory))];
   } else {
     subs = [...new Set(data.filter(d => d.category === currentCategory).map(d => d.subcategory))];
   }
@@ -759,6 +820,10 @@ function buildSubcategories() {
       let count;
       if (currentCategory === "All") {
         count = sub === "All" ? data.length : data.filter(d => d.subcategory === sub).length;
+      } else if (currentCategory === "Other") {
+        count = sub === "All"
+          ? data.filter(d => !mainCategories.includes(d.category)).length
+          : data.filter(d => !mainCategories.includes(d.category) && d.subcategory === sub).length;
       } else {
         count = sub === "All" 
           ? data.filter(d => d.category === currentCategory).length
@@ -816,8 +881,18 @@ function resetFilters() {
 }
 
 function applyFilters() {
+  // Define main categories (same as in buildCategories)
+  const mainCategories = ["Clothes", "Shoes", "Hair", "Devices"];
+  
   filtered = data.filter(d => {
-    const matchCategory = currentCategory === "All" || d.category === currentCategory;
+    // Category matching - handle "Other" specially
+    let matchCategory = true;
+    if (currentCategory === "Other") {
+      matchCategory = !mainCategories.includes(d.category);
+    } else {
+      matchCategory = currentCategory === "All" || d.category === currentCategory;
+    }
+    
     const matchSub = currentSubcategory === "All" || d.subcategory === currentSubcategory;
 
     // Quick filter
@@ -931,8 +1006,15 @@ function render() {
     if (item.email) badges.push('<span class="badge">✉ Email</span>');
     if (item.phone) badges.push('<span class="badge">📞 Phone</span>');
 
+    // Trust badge
+    let trustBadge = '';
+    if (item.trust_level) {
+      const level = item.trust_level.toLowerCase();
+      trustBadge = `<span class="trust-badge ${level}">${item.trust_level}</span>`;
+    }
+
     div.innerHTML = `
-      <div class="card-name">${highlight(item.name)}</div>
+      <div class="card-name">${highlight(item.name)} ${trustBadge}</div>
       <div class="card-category">${highlight(categoryDisplay)}</div>
       ${item.website ? `<div class="card-website">${highlight(extractDomain(item.website))}</div>` : ''}
       ${item.phone ? `<div class="card-phone">📞 ${escapeHtml(item.phone)}</div>` : ''}
