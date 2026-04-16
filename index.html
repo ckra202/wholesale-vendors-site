@@ -141,6 +141,92 @@ body {
   letter-spacing: 0.05em;
 }
 
+/* TOP SUPPLIERS SECTION */
+.top-suppliers {
+  background: var(--panel);
+  padding: 60px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.suppliers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.supplier-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.supplier-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.supplier-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.supplier-category {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.supplier-domain {
+  font-size: 13px;
+  color: var(--accent-light);
+  margin-bottom: 8px;
+}
+
+.supplier-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.supplier-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.supplier-badge.verified {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--success);
+}
+
+.supplier-badge.high-trust {
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--accent-light);
+}
+
 /* CONTAINER */
 .container {
   max-width: 1200px;
@@ -710,6 +796,15 @@ body {
   </div>
 </section>
 
+<!-- TOP SUPPLIERS -->
+<section class="top-suppliers" id="top-suppliers">
+  <div class="container">
+    <h2 class="section-title">Top Suppliers</h2>
+    <p class="section-subtitle">Verified vendors with highest trust scores</p>
+    <div class="suppliers-grid" id="top-suppliers-grid"></div>
+  </div>
+</section>
+
 <!-- VENDOR DIRECTORY -->
 <div class="container" id="directory">
   <div class="header">
@@ -802,6 +897,7 @@ fetch("data.json")
     filtered = d;
     updateStats();
     buildCategories();
+    renderTopSuppliers();
     render();
   })
   .catch(err => {
@@ -813,6 +909,52 @@ fetch("data.json")
       </div>
     `;
   });
+
+function renderTopSuppliers() {
+  const grid = document.getElementById("top-suppliers-grid");
+  if (!grid) return;
+  
+  // Filter for Verified + High trust vendors
+  const topVendors = data
+    .filter(v => v.verification_status === 'Verified' && v.trust_level === 'High')
+    .sort((a, b) => (b.trust_score || 0) - (a.trust_score || 0))
+    .slice(0, 15);
+  
+  if (topVendors.length === 0) {
+    grid.innerHTML = `
+      <div class="empty" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+        <p>No verified suppliers yet. <a href="#directory" style="color: var(--accent);">Browse all vendors</a></p>
+      </div>
+    `;
+    return;
+  }
+  
+  grid.innerHTML = topVendors.map(v => `
+    <div class="supplier-card" onclick="scrollToVendor('${v.name}')">
+      <div class="supplier-name">
+        ${escapeHtml(v.name)}
+        <span class="trust-badge high" style="font-size:10px;padding:2px 6px;">${v.trust_level}</span>
+      </div>
+      <div class="supplier-category">${escapeHtml(v.category || 'Other')}${v.subcategory ? ' → ' + escapeHtml(v.subcategory) : ''}</div>
+      ${v.website ? `<div class="supplier-domain">${escapeHtml(extractDomain(v.website))}</div>` : ''}
+      <div class="supplier-badges">
+        <span class="supplier-badge verified">✓ Verified</span>
+        ${v.business_type ? `<span class="supplier-badge high-trust">${escapeHtml(v.business_type)}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function scrollToVendor(name) {
+  document.getElementById('directory').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    const searchInput = document.querySelector('.search');
+    if (searchInput) {
+      searchInput.value = name;
+      search(name);
+    }
+  }, 500);
+}
 
 function updateStats() {
   document.getElementById("total-count").textContent = data.length;
