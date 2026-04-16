@@ -40,6 +40,108 @@ body {
   line-height: 1.5;
 }
 
+/* HERO SECTION */
+.hero {
+  background: linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 50%, #0f172a 100%);
+  padding: 80px 24px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 0%, #818cf8 50%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-value {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+
+.hero-stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* CONTAINER */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -579,10 +681,40 @@ body {
 
 <body>
 
-<div class="container">
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Find Verified Wholesale Suppliers</h1>
+    <p class="hero-subtitle">723 curated vendors across 20+ categories. Every supplier verified with real websites and contact info.</p>
+    <div class="hero-cta">
+      <a href="#directory" class="btn btn-primary">
+        Browse Directory
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#top-suppliers" class="btn btn-secondary">View Top Suppliers</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-value">723</span>
+        <span class="hero-stat-label">Vendors</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">20+</span>
+        <span class="hero-stat-label">Categories</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">100%</span>
+        <span class="hero-stat-label">Verified</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENDOR DIRECTORY -->
+<div class="container" id="directory">
   <div class="header">
-    <h1>Find Wholesale Vendors Fast</h1>
-    <p>685 vendors with active websites across 20+ categories</p>
+    <h1>Vendor Directory</h1>
+    <p>Search and filter wholesale vendors</p>
   </div>
 
   <div class="search-wrapper">
