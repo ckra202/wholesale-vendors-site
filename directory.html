@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Wholesale Vendor Directory</title>
+<title>Vendor Directory - Wholesale Suppliers</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,211 +40,52 @@ body {
   line-height: 1.5;
 }
 
-/* HERO SECTION */
-.hero {
-  background: linear-gradient(135deg, #0a0f1a 0%, #1a1f2e 50%, #0f172a 100%);
-  padding: 80px 24px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-}
-
-.hero-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.hero-title {
-  font-size: 48px;
-  font-weight: 700;
-  margin-bottom: 16px;
-  background: linear-gradient(135deg, #fff 0%, #818cf8 50%, #6366f1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-}
-
-.hero-subtitle {
-  font-size: 18px;
-  color: var(--text-muted);
-  margin-bottom: 32px;
-  line-height: 1.6;
-}
-
-.hero-cta {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  border: none;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-}
-
-.btn-primary:hover {
-  background: var(--accent-light);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.btn-secondary:hover {
-  border-color: var(--accent);
-  background: rgba(99, 102, 241, 0.1);
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 48px;
-  flex-wrap: wrap;
-}
-
-.hero-stat {
-  text-align: center;
-}
-
-.hero-stat-value {
-  display: block;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--accent-light);
-}
-
-.hero-stat-label {
-  font-size: 13px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* TOP SUPPLIERS SECTION */
-.top-suppliers {
+/* NAVIGATION */
+.nav {
   background: var(--panel);
-  padding: 60px 0;
   border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.section-title {
-  font-size: 28px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 8px;
-}
-
-.section-subtitle {
-  text-align: center;
-  color: var(--text-muted);
-  margin-bottom: 32px;
-}
-
-.suppliers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-.supplier-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  transition: all 0.2s ease;
-}
-
-.supplier-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.supplier-name {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 8px;
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
 }
 
-.supplier-category {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.supplier-domain {
-  font-size: 13px;
-  color: var(--accent-light);
-  margin-bottom: 8px;
-}
-
-.supplier-badges {
+.nav-brand {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
 }
 
-.supplier-badge {
-  font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--success);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+.nav-brand h1 {
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.supplier-badge.verified {
-  background: rgba(16, 185, 129, 0.15);
-  color: var(--success);
+.nav-links {
+  display: flex;
+  gap: 24px;
 }
 
-.supplier-badge.high-trust {
-  background: rgba(99, 102, 241, 0.15);
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
   color: var(--accent-light);
-}
-
-/* CTA SECTION */
-.cta-section {
-  background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
-  padding: 80px 24px;
-  text-align: center;
-}
-
-.cta-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 12px;
-}
-
-.cta-subtitle {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 32px;
 }
 
 /* CONTAINER */
@@ -781,65 +622,108 @@ body {
     padding: 24px;
     margin: 16px;
   }
+  
+  .nav-links {
+    display: none;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO SECTION -->
-<section class="hero">
-  <div class="hero-content">
-    <h1 class="hero-title">Find Verified Wholesale Suppliers</h1>
-    <p class="hero-subtitle">723 curated vendors across 20+ categories. Every supplier verified with real websites and contact info.</p>
-    <div class="hero-cta">
-      <a href="directory.html" class="btn btn-primary">
-        Browse Directory
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#top-suppliers" class="btn btn-secondary">View Top Suppliers</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="hero-stat-value">723</span>
-        <span class="hero-stat-label">Vendors</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-value">20+</span>
-        <span class="hero-stat-label">Categories</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-value">100%</span>
-        <span class="hero-stat-label">Verified</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TOP SUPPLIERS -->
-<section class="top-suppliers" id="top-suppliers">
-  <div class="container">
-    <h2 class="section-title">Top Suppliers</h2>
-    <p class="section-subtitle">Verified vendors with highest trust scores</p>
-    <div class="suppliers-grid" id="top-suppliers-grid"></div>
-  </div>
-</section>
-
-<!-- CTA TO DIRECTORY -->
-<section class="cta-section">
-  <div class="container">
-    <h2 class="cta-title">Ready to Find Your Suppliers?</h2>
-    <p class="cta-subtitle">Browse our complete directory of 723 verified wholesale vendors</p>
-    <a href="directory.html" class="btn btn-primary">
-      Browse Full Directory
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+<nav class="nav">
+  <div class="nav-content">
+    <a href="index.html" class="nav-brand">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <h1>Wholesale Directory</h1>
     </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="index.html#top-suppliers" class="nav-link">Top Suppliers</a>
+    </div>
   </div>
-</section>
+</nav>
 
+<div class="container">
+  <div class="header">
+    <h1>Vendor Directory</h1>
+    <p>Search and filter wholesale vendors</p>
+  </div>
+
+  <div class="search-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg>
+    <input class="search" placeholder="Search vendors by name, category, or website..." oninput="search(this.value)">
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="total-count">-</div>
+      <div class="stat-label">Total Vendors</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="website-count">-</div>
+      <div class="stat-label">Active Websites</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="showing-count">-</div>
+      <div class="stat-label">Showing</div>
+    </div>
+  </div>
+
+  <div class="results-info" id="results-info"></div>
+
+  <div class="active-filters" id="active-filters"></div>
+
+  <div class="chips-section">
+    <h3>Categories</h3>
+    <div class="chips" id="categories"></div>
+  </div>
+
+  <div class="chips-section" id="subcategory-section" style="display:none;">
+    <h3>Subcategories</h3>
+    <div class="chips" id="subcategories"></div>
+  </div>
+
+  <div class="chips-section">
+    <h3>Quick Filters</h3>
+    <div class="chips" id="filters">
+      <div class="chip active" data-filter="all" onclick="setFilter('all')">
+        <span>All</span>
+        <span class="count" id="filter-all">-</span>
+      </div>
+      <div class="chip" data-filter="website" onclick="setFilter('website')">
+        <span>✓ Website</span>
+        <span class="count" id="filter-website">-</span>
+      </div>
+      <div class="chip" data-filter="email" onclick="setFilter('email')">
+        <span>✉ Email</span>
+        <span class="count" id="filter-email">-</span>
+      </div>
+      <div class="chip" data-filter="phone" onclick="setFilter('phone')">
+        <span>📞 Phone</span>
+        <span class="count" id="filter-phone">-</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+  </div>
 </div>
+
+<div class="modal" id="modal">
+  <div class="modal-content" id="modalContent"></div>
 </div>
 
 <script src="app.js"></script>
 </body>
+
 </html>
